@@ -1,0 +1,60 @@
+Podcast Deployment
+=====================
+
+This is the script I use to deploy my daily Podcast at [http://rafael.adm.br/voltandopracasa](http://rafael.adm.br/voltandopracasa)
+
+It has a little workflow to:
+
+1. Detect wav files ready to be published
+2. Mix an intro audio
+3. Convert to MP3
+4. Set ID3 tags
+5. Upload MP3 by FTP
+6. Save a post on Wordpress
+
+More info: [http://rafael.adm.br/podcast-deployment](http://rafael.adm.br/podcast-deployment)
+
+DEPENDENCIES
+-------------
+
+* [Lame](http://lame.sourceforge.net)
+
+* [id3tool](http://nekohako.xware.cx/id3tool/)
+
+* [Wordpress](http://wordpress.org/)
+
+* [Wordpress Podcasting Plugin (suggestion)](http://wordpress.org/extend/plugins/podcasting/) 
+
+CONFIGURATION
+--------------
+
+	Rename config.example.php to config.php
+	
+	Edit config.php (options are self-explanatory)
+
+USAGE
+------
+
+	1. Copy wav files do dropbox folder
+	
+	2. Run # php deploy_podcast.php
+
+INSTALLATION (Optional)
+------------------------
+
+sudo ln -s /path_to/podcast_deployment/deploy_podcast.php /usr/local/bin/deploy_podcast
+
+After that you can just run: # deploy_podcast
+
+Licence
+--------
+
+Podcast Deployment is released under Creative Commons Attribution 2.5 Generic
+
+[http://creativecommons.org/licenses/by/2.5/](http://creativecommons.org/licenses/by/2.5/)
+
+Author
+-------
+
+[Rafael Lima](http://rafael.adm.br)
+
