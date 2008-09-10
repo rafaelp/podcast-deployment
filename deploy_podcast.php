@@ -55,24 +55,24 @@ class PodcastDeployment
 	
 	private function rename_wavs()
 	{
+		$number = intval(end($this->files['published']))+1;
 		foreach($this->get_files('dropbox') as $file)
 		{
-			$number = sprintf("%04d",(intval(end($this->files['published']))+1));
 			$from = $this->path('dropbox').'/'.$file;
-			$to = $this->path('to_convert').'/'.$number.'.wav';
+			$to = $this->path('to_convert').'/'.sprintf("%04d",$number).'.wav';
 			$this->log("Renaming $from to $to...");
 			rename($from, $to);
+			$number++;
 		}
 	}
 	
 	private function convert_to_mp3()
 	{
-		$cmd = 'lame -b 16 "[in]" "[out]"';
 		foreach($this->get_files('to_convert') as $file)
 		{
 			$in_file = $this->path('to_convert').'/'.$file;
 			$out_file = $this->path('to_upload').'/'.basename($file,'.wav').'.mp3';
-			$cmd = strtr($cmd,array('[in]'=>$in_file, '[out]'=>$out_file));
+			$cmd = 'lame -b 16 "'.$in_file.'" "'.$out_file.'"';
 			$this->log("Converting $file...");
 			exec($cmd);
 			rename($this->path('to_convert').'/'.$file, $this->path('sources').'/'.$file);
