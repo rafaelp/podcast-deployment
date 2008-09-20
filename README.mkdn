@@ -31,11 +31,11 @@ It has a little workflow to:
 
 	1. Copy wav files do dropbox folder
 	
-	2. # php deploy_podcast.php
+	2. $ php deploy_podcast.php
 
 ## INSTALLATION (Optional)
 
-    # sudo ln -s /path_to/podcast\_deployment/deploy\_podcast.php /usr/local/bin/deploy\_podcast
+    $ sudo ln -s /path_to/podcast\_deployment/deploy\_podcast.php /usr/local/bin/deploy\_podcast
 
 After that you can just run: # deploy_podcast
 
