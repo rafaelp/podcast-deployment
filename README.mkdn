@@ -1,5 +1,4 @@
-Podcast Deployment
-=====================
+# Podcast Deployment
 
 This is the script I use to deploy my daily Podcast at [http://rafael.adm.br/voltandopracasa](http://rafael.adm.br/voltandopracasa)
 
@@ -12,10 +11,7 @@ It has a little workflow to:
 5. Upload MP3 by FTP
 6. Save a post on Wordpress
 
-More info: [http://rafael.adm.br/podcast-deployment](http://rafael.adm.br/podcast-deployment)
-
-DEPENDENCIES
--------------
+## DEPENDENCIES
 
 * [Lame](http://lame.sourceforge.net)
 
@@ -25,36 +21,38 @@ DEPENDENCIES
 
 * [Wordpress Podcasting Plugin (suggestion)](http://wordpress.org/extend/plugins/podcasting/) 
 
-CONFIGURATION
---------------
+## CONFIGURATION
 
 	Rename config.example.php to config.php
 	
 	Edit config.php (options are self-explanatory)
 
-USAGE
-------
+## USAGE
 
 	1. Copy wav files do dropbox folder
 	
 	2. Run # php deploy_podcast.php
 
-INSTALLATION (Optional)
-------------------------
+## INSTALLATION (Optional)
 
 sudo ln -s /path_to/podcast_deployment/deploy_podcast.php /usr/local/bin/deploy_podcast
 
 After that you can just run: # deploy_podcast
 
-Licence
---------
+## License
 
 Podcast Deployment is released under Creative Commons Attribution 2.5 Generic
 
 [http://creativecommons.org/licenses/by/2.5/](http://creativecommons.org/licenses/by/2.5/)
 
-Author
--------
+## AUTHOR
 
-[Rafael Lima](http://rafael.adm.br)
+### **Rafael Lima**
 
+Blog: [http://rafael.adm.br](http://rafael.adm.br)
+
+Podcast: [http://rafael.adm.br/voltandopracasa](http://rafael.adm.br/voltandopracasa)
+
+Github: [http://github.com/rafaelp](http://github.com/rafaelp)
+
+Twitter: [http://twitter.com/rafaelp](http://twitter.com/rafaelp)
