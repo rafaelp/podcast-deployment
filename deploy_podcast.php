@@ -29,7 +29,7 @@ class PodcastDeployment
 	private function check_config()
 	{
 		if(!file_exists($this->params['path'])) {
-			$this->log('ERROR: Path configured does not exists');
+			$this->log("ERROR: Path does not exists. Check your configuration\n");
 		}
 	}
 	
@@ -62,6 +62,7 @@ class PodcastDeployment
 			$to = $this->path('to_convert').'/'.sprintf("%04d",$number).'.wav';
 			$this->log("Renaming $from to $to...");
 			rename($from, $to);
+			$this->log("OK\n");
 			$number++;
 		}
 	}
@@ -75,6 +76,7 @@ class PodcastDeployment
 			$cmd = 'lame -b 16 "'.$in_file.'" "'.$out_file.'"';
 			$this->log("Converting $file...");
 			exec($cmd);
+			$this->log("OK\n");
 			rename($this->path('to_convert').'/'.$file, $this->path('sources').'/'.$file);
 		}
 	}
@@ -93,51 +95,55 @@ class PodcastDeployment
 				$cmd .= '"'.$this->path('to_upload').'/'.$file.'"';
 				$this->log("Tagging $file...");
 				exec($cmd);
+				$this->log("OK\n");
 			}
 		}
 	}
 	
 	private function upload_files()
 	{
-		foreach($this->get_files('to_upload') as $file)
-		{
+		if($this->get_files('to_upload')) {
 			set_time_limit(0);
 			$this->log("Connecting to ftp server...");
 			$conn_id = ftp_connect($this->params['ftp']['hostname'], $this->params['ftp']['port'], 600);
 			if(!$conn_id) {
-				$this->log("There was an error connecting to ftp server");
+				$this->log("There was an error connecting to ftp server\n");
 				exit;
 			}
-			$this->log("Successfully connected to ".$this->params['ftp']['hostname']);
+			$this->log("OK\n");
 			$login_result = ftp_login($conn_id, $this->params['ftp']['username'], $this->params['ftp']['password']);
 
 			if(!$login_result) {
-				$this->log("Could not authenticate to ftp server");
+				$this->log("Could not authenticate to ftp server\n");
 				exit;
 			}
-
+			
 			// turn passive mode on
 			ftp_pasv($conn_id, true);
 
-			$remote_path = $this->params['ftp']['path'].'/'.str_replace('[episode]', $file, $this->params['filemask']);
-			$local_path = $this->path('to_upload').'/'.$file;
-			$this->log("Sending $file...");
-			$ret = ftp_nb_put($conn_id, $remote_path, $local_path, FTP_BINARY);
-			while ($ret == FTP_MOREDATA) {
+			foreach($this->get_files('to_upload') as $file)
+			{
+				$remote_path = $this->params['ftp']['path'].'/'.str_replace('[episode]', $file, $this->params['filemask']);
+				$local_path = $this->path('to_upload').'/'.$file;
+				$this->log("Uploading $file...");
+				$ret = ftp_nb_put($conn_id, $remote_path, $local_path, FTP_BINARY);
+				while ($ret == FTP_MOREDATA) {
 
-			   // Do whatever you want
-			   echo ".";
+				   // Do whatever you want
+				   echo ".";
 
-			   // Continue uploading...
-			   $ret = ftp_nb_continue($conn_id);
-			}
-			if ($ret != FTP_FINISHED) {
-			   echo "There was an error uploading $file...";
-			   exit(1);
-			}
+				   // Continue uploading...
+				   $ret = ftp_nb_continue($conn_id);
+				}
+				if ($ret != FTP_FINISHED) {
+				   echo "There was an error uploading $file...";
+				   exit(1);
+				}
 			
-			$this->log("Successfully uploaded $file");
-			rename($this->path('to_upload').'/'.$file, $this->path('to_publish').'/'.$file);
+				$this->log("OK\n");
+				rename($this->path('to_upload').'/'.$file, $this->path('to_publish').'/'.$file);
+			}
+
 			ftp_close($conn_id);
 		}
 	}
@@ -163,7 +169,7 @@ class PodcastDeployment
 			curl_setopt($ch, CURLOPT_TIMEOUT, 1);
 			curl_exec($ch);
 			curl_close($ch);
-			echo "OK";
+			echo "OK\n";
 			rename($this->path('to_publish').'/'.$file, $this->path('published').'/'.$file);
 			$posts_saved++;
 		}
@@ -174,7 +180,7 @@ class PodcastDeployment
 	
 	private function log($log)
 	{
-		echo "$log\n";
+		echo "$log";
 	}
 }
 
